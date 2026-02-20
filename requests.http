@@ -69,18 +69,19 @@ Authorization: Bearer {{token}}
 ###
 
 # @name update_post
-PATCH {{baseUrl}}/post/{{postId}}
+PATCH {{baseUrl}}/post/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "title": "Titulo Atualizado",
+  "userId": 1,
+  "title": "Titulo Atualizado 1",
   "content": "Conteudo atualizado do post."
 }
 
 ###
 
 # @name delete_post
-DELETE {{baseUrl}}/post/{{postId}}
+DELETE {{baseUrl}}/post/2
 Content-Type: application/json
 Authorization: Bearer {{token}}

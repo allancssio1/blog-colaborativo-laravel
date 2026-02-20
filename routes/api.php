@@ -16,7 +16,7 @@ Route::prefix('post')->group(function() {
   
   Route::middleware([ValidateToken::class])->group(function() {
     Route::post('/', [PostController::class, 'createPost']);
-    Route::patch('/', [PostController::class, 'updatePost']);
-    Route::delete('/', [PostController::class, 'deletePost']);
+    Route::patch('/{id}', [PostController::class, 'updatePost']);
+    Route::delete('/{id}', [PostController::class, 'deletePost']);
   });
 });
