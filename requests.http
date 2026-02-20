@@ -1,0 +1,77 @@
+@baseUrl = http://localhost:8000/api
+
+### ========== USER ==========
+
+# @name get_user
+GET {{baseUrl}}/user
+
+###
+
+# @name create_user
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+  "name": "Allan Cassio",
+  "email": "allan@example.com",
+  "password": "senha123"
+}
+
+### ========== AUTH ==========
+
+# @name register
+GET {{baseUrl}}/register
+
+###
+
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "allan@example.com",
+  "password": "senha123"
+}
+
+### ========== POSTS ==========
+
+# @name list_posts
+GET {{baseUrl}}/post
+
+###
+
+# @name get_post_by_id
+GET {{baseUrl}}/post/1
+
+###
+
+# @name create_post
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+  "title": "Meu Primeiro Post",
+  "content": "Conteudo do meu primeiro post no blog colaborativo."
+}
+
+###
+
+# @name update_post
+PATCH {{baseUrl}}/post
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Titulo Atualizado",
+  "content": "Conteudo atualizado do post."
+}
+
+###
+
+# @name delete_post
+DELETE {{baseUrl}}/post
+Content-Type: application/json
+
+{
+  "id": 1
+}
