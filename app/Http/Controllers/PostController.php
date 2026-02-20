@@ -8,16 +8,14 @@ use Illuminate\Http\Request;
 class PostController extends Controller 
 {
   function listPost() {
-    return response()->json(['posts' => [
-      'title' => 'Post teste',
-      'subtitle' => 'Subtitulo teste' 
-    ]]);
+    return response()->json([]);
   }
   function getById(string $id) {
+
     return response()->json(['posts' => [
       "id" => $id,  
       'title' => 'Post teste',
-      'subtitle' => 'Subtitulo teste' 
+      'content' => 'Subtitulo teste' 
     ]]);
   }
 
@@ -25,7 +23,7 @@ class PostController extends Controller
     $validated = $request -> validate([
       'userId' => 'required|number',
       'title' => 'required|min:3',
-      'subtitle' => 'required|min:10'
+      'content' => 'required|min:10'
     ]);
 
     return response()->json([$validated]);
@@ -37,7 +35,7 @@ class PostController extends Controller
       'userId' => 'required|number',
       'id' => 'required|number',
       'title' => 'required|min:3',
-      'subtitle' => 'required|min:10'
+      'content' => 'required|min:10'
     ]);
 
     return response()->json([$validated]);

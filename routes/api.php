@@ -1,20 +1,22 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Middleware\ValidateToken;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', [UserController::class, 'getUser']);
-Route::post('/user', [UserController::class, 'createUser']);
+Route::prefix('auth')->group(function () {
+  Route::post('/register', [AuthController::class, 'register']);
+  Route::post('/login', [AuthController::class, 'login']);
+});
 
-Route::get('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::get('/post', [PostController::class, 'listPost']);
-Route::get('/post/:id', [PostController::class, 'getById']);
-Route::post('/post', [PostController::class, 'createPost']);
-Route::patch('/post', [PostController::class, 'updatePost']);
-Route::delete('/post', [PostController::class, 'deletePost']);
-
+Route::prefix('post')->group(function() {
+  Route::get('/{id}', [PostController::class, 'getById']);
+  Route::get('/', [PostController::class, 'listPost']);
+  
+  Route::middleware([ValidateToken::class])->group(function() {
+    Route::post('/', [PostController::class, 'createPost']);
+    Route::patch('/', [PostController::class, 'updatePost']);
+    Route::delete('/', [PostController::class, 'deletePost']);
+  });
+});

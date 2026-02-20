@@ -1,5 +1,8 @@
 @baseUrl = http://localhost:8000/api
+@token = {{login.response.body.$.token}}
+@userId = {{login.response.body.$.userId}}
 
+@postId = {{list_posts.response.body.$[0].id}}
 ### ========== USER ==========
 
 # @name get_user
@@ -20,12 +23,19 @@ Content-Type: application/json
 ### ========== AUTH ==========
 
 # @name register
-GET {{baseUrl}}/register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Allan Cassio",
+  "email": "allan1@example.com",
+  "password": "senha123"
+}
 
 ###
 
 # @name login
-POST {{baseUrl}}/login
+POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
@@ -48,20 +58,22 @@ GET {{baseUrl}}/post/1
 # @name create_post
 POST {{baseUrl}}/post
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "title": "Meu Primeiro Post",
-  "content": "Conteudo do meu primeiro post no blog colaborativo."
+  "content": "Conteudo do meu primeiro post no blog colaborativo.",
+  "userId": 1
 }
 
 ###
 
 # @name update_post
-PATCH {{baseUrl}}/post
+PATCH {{baseUrl}}/post/{{postId}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "id": 1,
   "title": "Titulo Atualizado",
   "content": "Conteudo atualizado do post."
 }
@@ -69,9 +81,6 @@ Content-Type: application/json
 ###
 
 # @name delete_post
-DELETE {{baseUrl}}/post
+DELETE {{baseUrl}}/post/{{postId}}
 Content-Type: application/json
-
-{
-  "id": 1
-}
+Authorization: Bearer {{token}}
