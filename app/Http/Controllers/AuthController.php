@@ -22,7 +22,7 @@ class AuthController extends Controller
       'password' => Hash::make($validated['password'])
     ]);
 
-    return response()->json($user);
+    return response()->json(['message' => 'User registered successfully', 'user' => $user]);
   }
 
   function login(Request $request){
@@ -50,6 +50,6 @@ class AuthController extends Controller
     ['post:read', 'post:create', 'post:update', 'post:delete'],
     now()->addHour(24));
 
-    return response()->json(['token' => $token->plainTextToken, "userId" => $userFound->id]);
+    return response()->json(['token' => $token->plainTextToken, 'user' => $userFound]);
   }
 }

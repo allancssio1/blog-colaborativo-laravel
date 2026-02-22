@@ -7,18 +7,21 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class PostController extends Controller 
+class PostController extends Controller
 {
   function listPost() {
-    $posts = Post::all();
+    $posts = Post::with('author:id,name')->get();
     return response()->json($posts);
   }
 
   function getById(string $id) {
-    $post = Post::find($id);
+    $post = Post::with('author:id,name')->find($id);
 
+    if (!$post) {
+      return response()->json(['error' => 'Post not found'], 404);
+    }
 
-    return response()->json([$post]);
+    return response()->json($post);
   }
 
   function createPost(Request $request){
@@ -40,15 +43,17 @@ class PostController extends Controller
       "author_id" => $user->id
     ]);
 
-    return response()->json([$post]);
-  
+    $post->load('author:id,name');
+
+    return response()->json(['message' => 'Post created', 'post' => $post]);
+
   }
 
   function updatePost(Request $request, string $id){
     $post = Post::find($id);
 
     if (!$post) {
-      return response()->json(['error' => 'Post not found']);
+      return response()->json(['error' => 'Post not found'], 404);
     }
 
     $validated = $request -> validate([
@@ -58,15 +63,16 @@ class PostController extends Controller
     ]);
 
     if($post->author_id !== $validated['userId']){
-      return response()->json(['error' => 'You are not the author of this post']);
+      return response()->json(['error' => 'You are not the author of this post'], 403);
     }
 
    $post->title = $validated['title'] ?? $post->title;
    $post->content = $validated['content'] ?? $post->content;
 
    $post->save();
+   $post->load('author:id,name');
 
-    return response()->json([$post]);
+    return response()->json(['message' => 'Post updated', 'post' => $post]);
   }
 
   function deletePost(string $id){
